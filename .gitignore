@@ -1,0 +1,9 @@
+*.DS_Store
+.idea
+1
+2
+main
+*.dSYM
+*.out
+*.pyc
+
