@@ -3,24 +3,24 @@
 let digits = Array(inputLines[0]).map({ Int(String($0))! })
 let numDigits = digits.count
 
-func solve1() {
+func solve(arrayOffset: Int) {
 	var total = 0
 	for i in 0..<numDigits {
-		if digits[i] == digits[(i+1) % numDigits] {
+		if digits[i] == digits[(i + arrayOffset) % numDigits] {
 			total += digits[i]
 		}
 	}
 	print(total)
 }
 
+func solve1() {
+	solve(arrayOffset: 1)
+}
+
 func solve2() {
-	var total = 0
-	for i in 0..<numDigits {
-		if digits[i] == digits[(i + (numDigits/2)) % numDigits] {
-			total += digits[i]
-		}
-	}
-	print(total)
+	// Could save time by only testing half the digits, but
+	// it's plenty fast; the savings would be negligible.
+	solve(arrayOffset: numDigits/2)
 }
 
 solve1()
