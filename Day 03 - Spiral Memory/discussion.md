@@ -15,3 +15,10 @@ I lost a bunch of time on Part 2 due to coding errors in two places:
 
 In retrospect I wonder if I'd have been better off coding Part 1 instead of doing the math on paper.  I could then have modified the working code to solve Part 2.  Total time to solve both might have been faster.
 
+
+## Thoughts the morning after
+
+- In Python it would have been trivial to implement the grid as a dictionary mapping (x, y) tuples to integers.  That approach would not quite work in Swift, because (Int, Int) is not Hashable and therefore cannot be a dictionary key.  One approach would be to create a struct called `Point` to use as the dictionary key.  This would have required implementing a hash function and an `==` operator.  There's sample code in Apple's Swift docs that does exactly this.  Another approach would be to use nested dictionaries: an outer dictionary whose keys are x coordinates and whose values are dictionaries.  The inner dictionaries would map y coordinates to cell values.  These approaches are easy enough, just a few lines of code, but they feel like drudge work compared to Python's built-in ability to use tuples of integers as dictionary keys.
+
+- Speaking of drudgery, it was a pain thinking through the logic for populating cells in the correct order.  I was doing it with four separate loops, one for each side of the square whose perimeter I was populating.  This felt like I was thinking through more nitty-gritty than I should have to.  In the morning it occurred to me I could have written a function like `nextXY(_ x: Int, _ y: Int) -> (Int, Int)` that for any point in the grid would give the coordinates of the next cell in the spiral.
+
