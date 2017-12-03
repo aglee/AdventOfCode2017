@@ -18,8 +18,6 @@ func solve1() {
 }
 
 func solve2() {
-	// Could save time by only testing half the digits, but
-	// it's plenty fast; the savings would be negligible.
 	solve(arrayOffset: numDigits/2)
 }
 
