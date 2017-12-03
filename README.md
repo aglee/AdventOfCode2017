@@ -10,7 +10,7 @@ This directory contains my solutions to the 25-day [Advent of Code 2017](http://
 
 My AoC code usually starts quick and dirty.  In particular, I'll often start Part 2 by copy-pasting the `solve1()` code into `solve2()`.  To varying degrees I will come back and clean the code up, but my priority will be whatever it takes to get the correct answer as fast as I can.
 
-I've been using [CodeRunner](https://coderunnerapp.com/) to code, run, and debug these programs.  If you don't have CodeRunner you can run them from the command line, after `cd`-ing to that day's directory:
+I've been using [CodeRunner](https://coderunnerapp.com/) to code, run, and debug these programs.c  [**Update:** I've switched to Xcode for Swift coding.  More about this in my [Day 3 notes](/Day 03 - Spiral Memory/discussion.md).  If you don't have CodeRunner you can run them from the command line, after `cd`-ing to that day's directory:
 
 ```bash
 # Swift
