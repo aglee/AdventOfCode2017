@@ -6,7 +6,7 @@ One drawback is Swift's compilation time.  At some point I might give playground
 
 The problem statement mentions a term I like: "[Manhattan Distance](https://en.wikipedia.org/wiki/Taxicab_geometry)".
 
-Solved Part 1 by hand, noticing the pattern of concentric squares centered at the origin.  Each such square of side n has n^2 in the bottom right corner.  Note also that n is always odd.  The largest perfect square less than my target number was 537^2.  So to solve Part 1 I assumed I'd already filled in a 537x537 square and figured out how much more I'd have to travel from there to reach the target number.
+Solved Part 1 by hand, noticing the pattern of concentric squares centered at the origin.  Each such square of side n has n^2 in the bottom right corner.  Note also that n is always odd.  The largest perfect square less than my target number was 537^2.  So to solve Part 1 I assumed I'd already filled in a 537x537 square and figured out how much more I'd have to travel from there to reach the target number.  [UPDATE: I've refactored the code so it now solves both Part 1 and Part 2.  There's a base class called `Grid`, with subclasses `GridPart1` and `GridPart2`.]
 
 I lost a bunch of time on Part 2 due to coding errors in two places:
 
