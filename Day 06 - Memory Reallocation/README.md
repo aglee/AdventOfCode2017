@@ -1,6 +1,6 @@
 # Advent of Code 2017, Day 6
 
-Did this one in Python.  As I read the puzzle description I quickly saw that using Swift was going to take too long, at least with my level of proficiency.  I needed a set of lists of integers, and I'm not aware of a quick way to do that in Swift.  In Python it's trivial; the language naturally supports that data structure.
+Did this one in Python.  As I read the puzzle description I quickly saw that using Swift was going to take too long, at least with my level of proficiency.  I needed a set of lists of integers, and I'm not aware of a quick way to do that in Swift.  In Python it's trivial; the language naturally supports that data structure.  [**Update:** I thought of a Swift approach that is only a little more work than the Python approach.  I coded it and added it to this repo.]
 
 Recently, while doing some old AoC puzzles for practice, I ran into a Swift gotcha regarding the `%` operator.  Swift returns -1 and not 3 for `-1 % 4`.  I don't understand the reasoning, but apparently the decision was to make `%` a [**remainder** operator](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html) in Swift rather than a **modulo** operator.  I took a moment to double-check that Python doesn't do the same, because I was going to be using `%` on array indexes.  Later I realized it was irrelevant for this puzzle, as I wasn't going to have any negative values.  But good to know for the future.
 
