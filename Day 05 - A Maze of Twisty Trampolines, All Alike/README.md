@@ -10,3 +10,18 @@ One of my sloppy mistakes was that I was using global variables to store the inp
 
 Another source of bugs tonight was being too hasty to believe I understood the specifications.  That's a pitfall to avoid in any dev situation.  AoC is a good way to practice understanding the specs.
 
+Realized I could have created the `offsets` array more concisely.  I did it like this:
+
+```swift
+var offsets = [Int]()
+for line in inputLines {
+	offsets.append(Int(line)!)
+}
+```
+
+This would have been simpler:
+
+```swift
+var offsets = inputLines.map({ Int($0)! })
+```
+
