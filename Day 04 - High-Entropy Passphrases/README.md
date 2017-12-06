@@ -1,4 +1,4 @@
-# Notes on Advent of Code 2017, Day 4
+# Advent of Code 2017, Day 4
 
 Most of the work in my solution is done by the Swift standard libraries:
 

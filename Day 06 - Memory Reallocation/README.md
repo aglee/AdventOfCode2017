@@ -1,4 +1,4 @@
-# Notes on Advent of Code 2017, Day 6
+# Advent of Code 2017, Day 6
 
 Did this one in Python.  As I read the puzzle description I quickly saw that using Swift was going to take too long, at least with my level of proficiency.  I needed a set of lists of integers, and I'm not aware of a quick way to do that in Swift.  In Python it's trivial; the language naturally supports that data structure.
 

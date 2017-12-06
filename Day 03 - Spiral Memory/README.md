@@ -1,4 +1,4 @@
-# Notes on Advent of Code 2017, Day 3
+# Advent of Code 2017, Day 3
 
 Changed my workflow -- now using Xcode since I couldn't get Swift breakpoints to work in CodeRunner.  Also, Xcode has handy integration with Swift documentation.  I have a scratch CLI Xcode project with just two files, `main.swift` and `input.swift`.  Once I've used that to solve the puzzles, I copy those files into my AoC directory structure (which includes files like this one) and confirm that the code works in CodeRunner.  I want the code to work independent of Xcode.
 

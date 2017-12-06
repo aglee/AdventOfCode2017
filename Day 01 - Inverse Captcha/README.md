@@ -1,4 +1,4 @@
-# Notes on Advent of Code 2017, Day 1
+# Advent of Code 2017, Day 1
 
 It occurred to me afterwards that in `solve2()` I could have saved time by only testing half the digits, but the runtime savings would have been negligible and not worth the extra coding time.
 

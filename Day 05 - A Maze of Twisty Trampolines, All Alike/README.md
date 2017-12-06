@@ -1,4 +1,4 @@
-# Notes on Advent of Code 2017, Day 5
+# Advent of Code 2017, Day 5
 
 Made a lot of sloppy mistakes on this one.
 
