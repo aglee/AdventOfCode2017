@@ -2,6 +2,6 @@ import Foundation
 
 // Puzzle input copied from the AoC website.
 let inputLines: [String] = """
--- Paste actual input here. --
+PASTE_ACTUAL_INPUT_HERE
 """.components(separatedBy: .newlines)
 
