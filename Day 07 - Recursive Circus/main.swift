@@ -6,13 +6,7 @@ class Tower {
 	var treeWeight = -1
 	var normalTreeWeight = -1
 
-	var depth: Int {
-		if let parent = parent {
-			return parent.depth + 1
-		} else {
-			return 0
-		}
-	}
+	var depth: Int { return parent == nil ? 0 : parent!.depth + 1 }
 
 	// Recursively calculate the weight of the subtree rooted at this node.
 	func updateTreeWeight() {
