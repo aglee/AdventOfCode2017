@@ -12,13 +12,13 @@ So, the first few squares' values are chosen as follows:
 
 Once a square is written, its value does not change. Therefore, the first few squares would receive the following values:
 
-<pre>
+```plain
 147  142  133  122   59
 304    5    4    2   57
 330   10    1    1   54
 351   11   23   25   26
 362  747  806--->   ...
-</pre>
+```
 
 What is the first value written that is larger than your puzzle input?
 

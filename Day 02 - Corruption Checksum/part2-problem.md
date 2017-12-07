@@ -8,11 +8,11 @@ It sounds like the goal is to find the only two numbers in each row where one ev
 
 For example, given the following spreadsheet:
 
-<pre>
+```plain
 5 9 2 8
 9 4 7 3
 3 8 6 5
-</pre>
+```
 
 - In the first row, the only two numbers that evenly divide are 8 and 2; the result of this division is 4.
 - In the second row, the two numbers are 9 and 3; the result is 3.

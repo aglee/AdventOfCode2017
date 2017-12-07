@@ -6,11 +6,11 @@ The spreadsheet consists of rows of apparently-random numbers. To make sure the 
 
 For example, given the following spreadsheet:
 
-<pre>
+```plain
 5 1 9 5
 7 5 3
 2 4 6 8
-</pre>
+```
 
 - The first row's largest and smallest values are 9 and 1, and their difference is 8.
 - The second row's largest and smallest values are 7 and 3, and their difference is 4.
