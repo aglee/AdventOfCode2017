@@ -16,18 +16,8 @@ class Tower: CustomStringConvertible {
 
 	// Recursively calculate the weight of the subtree rooted at this node.
 	func updateTreeWeight() {
-		if children.count == 0 {
-			treeWeight = weight
-			return
-		}
-
-		for child in children {
-			child.updateTreeWeight()
-		}
-		treeWeight = weight  // Our own weight is included in the total.
-		for child in children {
-			treeWeight += child.treeWeight
-		}
+		for child in children { child.updateTreeWeight() }
+		treeWeight = weight + children.reduce(0, { $0 + $1.treeWeight })
 	}
 
 	var description: String {
