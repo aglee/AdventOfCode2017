@@ -1,4 +1,4 @@
-class Tower: CustomStringConvertible {
+class Tower {
 	var name = "NAME_HERE"
 	var weight = -1
 	var children = [Tower]()
@@ -18,14 +18,6 @@ class Tower: CustomStringConvertible {
 	func updateTreeWeight() {
 		for child in children { child.updateTreeWeight() }
 		treeWeight = weight + children.reduce(0, { $0 + $1.treeWeight })
-	}
-
-	var description: String {
-		if children.count == 0 {
-			return "(\(name), \(weight), \(treeWeight))"
-		} else {
-			return "(\(name), \(weight), \(treeWeight), \(children.map({ $0.name })))"
-		}
 	}
 }
 
@@ -60,17 +52,6 @@ for line in inputLines {
 
 let root = towersByName.values.first(where: { $0.parent == nil })!
 root.updateTreeWeight()
-
-func printOutline(_ t: Tower) {
-	var s = ""
-	for _ in 0..<t.depth { s += "\t" }
-	s += "\(t.name) \(t.treeWeight)"
-	print(s)
-	for child in t.children {
-		printOutline(child)
-	}
-}
-//printOutline(root!)
 
 func solve1() {
 	print(root.name)
