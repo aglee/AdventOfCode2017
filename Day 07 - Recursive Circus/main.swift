@@ -4,6 +4,7 @@ class Tower: CustomStringConvertible {
 	var children = [Tower]()
 	var parent: Tower?
 	var treeWeight = -1
+	var normalTreeWeight = -1
 
 	var depth: Int {
 		if let parent = parent {
@@ -13,6 +14,7 @@ class Tower: CustomStringConvertible {
 		}
 	}
 
+	// Recursively calculate the weight of the subtree rooted at this node.
 	func updateTreeWeight() {
 		if children.count == 0 {
 			treeWeight = weight
@@ -85,29 +87,47 @@ func printOutline(_ t: Tower) {
 		printOutline(child)
 	}
 }
-
-printOutline(root!)
+//printOutline(root!)
 
 func solve1() {
 	print(root.name)
 }
 
 func solve2() {
-	var candidates = Set<String>()
+	func findOddball(_ nodes: [Tower]) -> Tower? {
+		// We are looking for cases where there are 3 or more elements in the
+		// list.  If there are only 2 elements, either one of them could be the
+		// answer, and we've been told there's a unique answer.
+		if nodes.count < 3 { return nil }
+
+		// Figure out what treeWeight most of the nodes have.  We can infer it
+		// from the first three nodes in the list.
+		let normalTreeWeight: Int
+		if nodes[0].treeWeight == nodes[1].treeWeight {
+			normalTreeWeight = nodes[0].treeWeight
+		} else {
+			normalTreeWeight = nodes[2].treeWeight
+		}
+
+		// See if there is a node that doesn't match that "normal" weight.
+		if let oddball = nodes.first(where: { $0.treeWeight != normalTreeWeight }) {
+			oddball.normalTreeWeight = normalTreeWeight
+			return oddball
+		}
+		return nil
+	}
+
+	// Find all nodes that are candidates for the answer.
+	var candidates = [Tower]()
 	for t in towersByName.values {
-		guard let parent = t.parent else { continue }
-		if parent.children.count < 2 { continue }
-		let firstWeight = parent.children.first!.treeWeight
-		for child in parent.children {
-			if child.treeWeight != firstWeight {
-				candidates.insert(child.name)
-			}
+		if let oddball = findOddball(t.children) {
+			candidates.append(oddball)
 		}
 	}
-	for name in candidates {
-		let t = towerWithName(name)
-		print(Array(t.parent!.children.map({($0.name, $0.weight, $0.treeWeight, $0.depth, $0.parent!.name)})))
-	}
+
+	// The answer is whichever node in that list is deepest in the tree.
+	let deepest = candidates.max(by: { $0.depth < $1.depth })!
+	print(deepest.weight + (deepest.normalTreeWeight - deepest.treeWeight))
 }
 
 solve1()
