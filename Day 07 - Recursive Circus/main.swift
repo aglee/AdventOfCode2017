@@ -58,14 +58,7 @@ for line in inputLines {
 	}
 }
 
-// Recursively calculate the treeWeight for every node in the tree.
-var root: Tower!
-for t in towersByName.values {
-	if t.parent == nil {
-		root = t
-		break
-	}
-}
+let root = towersByName.values.first(where: { $0.parent == nil })!
 root.updateTreeWeight()
 
 func printOutline(_ t: Tower) {
