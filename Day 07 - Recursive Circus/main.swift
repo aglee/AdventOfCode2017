@@ -29,11 +29,7 @@ func towerWithName(_ name: String) -> Tower {
 }
 
 for line in inputLines {
-	let line =
-		line.replacingOccurrences(of: ",", with: "")
-			.replacingOccurrences(of: "(", with: "")
-			.replacingOccurrences(of: ")", with: "")
-			.replacingOccurrences(of: "-> ", with: "")
+	let line = [",", "(", ")", "-> "].reduce(line, { $0.replacingOccurrences(of: $1, with: "") })
 	let parts = line.split(separator: " ").map({ String($0) })
 	let tower = towerWithName(parts[0])
 	tower.weight = Int(parts[1])!
