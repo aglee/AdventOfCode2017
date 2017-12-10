@@ -8,6 +8,8 @@ for line in inputLines {
 	//let parts = line.split(separator: " ").map({ Int($0)! })
 
 	//let parts = line.split(separator: " ").map({ String($0) })
+	//let aaa = parts[000]
+	//let aaa = Int(parts[000])!
 }
 
 
