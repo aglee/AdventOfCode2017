@@ -95,7 +95,8 @@ func solve2() {
 	// Convert to hex string.
 	var s = ""
 	for n in dense {
-		s += String(n, radix: 16)
+		//s += String(n, radix: 16)  <== Oops, wrong output for n<16.
+		s += String(format: "%02x", n)
 	}
 	print(s)
 }
