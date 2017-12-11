@@ -10,5 +10,23 @@ I did no testing for Part 2 except for a quick sanity check of the `part2Lengths
 
 If I'd done this in Python I could have used the convenient `ord()` function to get ASCII values.  I believe this is easier in Swift 4 than it was in Swift 3, but I didn't bother looking up how to do it.  I knew the input would only be digits and commas, and the puzzle description gave the example of `1,2,3` becoming `49,44,50,44,51`.  I used that information to code my own ASCII conversion.
 
-UPDATE: A comment from a fellow RCer made me realize my code for generating the final hex string was incorrect.  It happened to work for me because all my bytes were over 15.  I've updated `main.swift` with a correction, which I tested to make sure it still gives the right answer.
+A comment from a fellow RCer made me realize my code for generating the final hex string was incorrect.  It happened to work for me because all my bytes were over 15.  I've updated `main.swift` with a correction, which I tested to make sure it still gives the right answer.
+
+I did think this time to use Swift's `reduce` for xor but forgot that I could use `^` by itself as the reduce function, so I wrote:
+
+```swift
+let reduced = block.reduce(0, { $0 ^ $1 })
+```
+
+...when I could have written:
+
+```swift
+let reduced = block.reduce(0, ^)
+```
+
+Also I didn't think to use `reduce` for constructing the hex string.  I used a loop when I could have done this:
+
+```swift
+print(dense.reduce("", { $0 + String(format: "%02x", $1) }))
+```
 
