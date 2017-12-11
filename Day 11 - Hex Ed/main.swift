@@ -1,54 +1,37 @@
+// See the README for an explanation of the logic here.
 
-//import Foundation
+let xyOffsets = [
+	"n": (0, 1),
+	"ne": (1, 1),
+	"se": (1, 0),
+	"s": (0, -1),
+	"sw": (-1, -1),
+	"nw": (-1, 0)
+]
 
-class Puzzle {
-	let inputSteps: [String]
-	let xyOffsets = [
-		"n": (0, 1),
-		"ne": (1, 1),
-		"se": (1, 0),
-		"s": (0, -1),
-		"sw": (-1, -1),
-		"nw": (-1, 0)
-	]
+var childX = 0
+var childY = 0
+var furthestEver = 0
 
-	var childPos: (x: Int, y: Int) = (0, 0)
-	var furthestEver = 0
+func minStepsToChild() -> Int { return max(abs(childX), abs(childY)) }
 
-	init(_ inputLine: String) {
-		inputSteps = inputLine.split(separator: ",").map { String($0) }
-	}
+let inputSteps = inputLines[0].split(separator: ",").map { String($0) }
+for step in inputSteps {
+	// Have the child take a step.
+	let (dx, dy) = xyOffsets[step]!
+	childX += dx
+	childY += dy
 
-	func childWalk() {
-		for step in inputSteps {
-			let (dx, dy) = xyOffsets[step]!
-			childPos = (childPos.x + dx, childPos.y + dy)
-
-			let steps = minStepsToChild()
-			if steps > furthestEver { furthestEver = steps }
-		}
-//		print(childPos)
-	}
-
-	func minStepsToChild() -> Int {
-		let (x, y) = (abs(puz.childPos.x), abs(puz.childPos.y))
-		return max(x, y)
-	}
+	// See if the child has set a new distance record.
+	furthestEver = max(furthestEver, minStepsToChild())
 }
 
-//let puz = Puzzle("ne,ne,ne")
-//let puz = Puzzle("ne,ne,sw,sw")
-//let puz = Puzzle("ne,ne,s,s")
-//let puz = Puzzle("se,sw,se,sw,sw")
-let puz = Puzzle(inputLines[0])
-puz.childWalk()
-
 func solve1() {
-	print(puz.minStepsToChild())
+	print(minStepsToChild())
 }
 
 func solve2() {
-	print(puz.furthestEver)
+	print(furthestEver)
 }
 
 solve1()
