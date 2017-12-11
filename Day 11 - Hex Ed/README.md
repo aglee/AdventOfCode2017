@@ -18,7 +18,7 @@ F---E
 
 We've shifted the two east neighbors up and the two west neighbors down.  Now, going north means offsetting (x, y) by (0, 1).  Going northeast means offsetting by (1, 1), southeast is (1, 0), etc.  Hence the `xyOffsets` dictionary.
 
-The reasoning for `minStepsToChild` is like this.  There are two cases.  (Note: I'd only thought of the second case, which happened to work with my inputs.  I understood the need for the second case after seeing a fellow RCer's solution.)
+The reasoning for `minStepsToChild` is like this.  There are two cases.
 
 - Case 1: The child is either northwest or southeast of the origin.  In this case the only possible steps from the origin are horizontal or vertical, so the minimum distance is the Manhattan distance.
 
