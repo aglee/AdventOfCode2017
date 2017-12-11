@@ -13,7 +13,16 @@ var childX = 0
 var childY = 0
 var furthestEver = 0
 
-func minStepsToChild() -> Int { return max(abs(childX), abs(childY)) }
+func minStepsToChild() -> Int {
+	// Hm, there's no sign function in Swift AFAIK.
+	if childX * childY > 0 {
+		// Northeast or southwest quadrant.
+		return max(abs(childX), abs(childY))
+	} else {
+		// Northwest or southeast quadrant.
+		return abs(childX) + abs(childY)
+	}
+}
 
 let inputSteps = inputLines[0].split(separator: ",").map { String($0) }
 for step in inputSteps {
