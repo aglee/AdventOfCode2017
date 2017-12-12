@@ -23,7 +23,7 @@ We've shifted the two east neighbors (C and D) up and the two west neighbors (F 
 - Southeast to F is (1, 0).  (This is east in Cartesian coordinates but southeast in hex coordinates.)
 - South to E is (0, -1).
 - Southwest to F is (-1, -1)
-- Northwest to G is (-1, 1).
+- Northwest to G is (-1, 0).
 
 Hence the `xyOffsets` dictionary.
 
