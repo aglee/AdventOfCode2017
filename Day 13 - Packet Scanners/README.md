@@ -1,6 +1,6 @@
 # Advent of Code 2017, Day 13
 
-The time it took me to solve today's puzzle was by far the longest so far this year.
+The time it took me to solve today's puzzle was by far the longest so far this year, and yet my solution is one of the smallest in terms of lines of code.
 
 For Part 1 I used more elaborate logic than was necessary, including a `Layer` class.  In theory it would have been fine to merely tweak that logic to solve Part 2, but I saw it was taking a long time to test lots of values of `delay`.  It's possible I could have let that run, slow as it was, and still gotten the answer sooner than I did, but I wouldn't have been as satisfied.  I looked harder and realized I could remove things.  For example, I didn't need to create an object to simulate layers and scanners -- I just needed to do some modulo math.  I didn't need to simulate the packet going through the layers in order, or to account for it going through depths that had no layer.  I'm realizing now I didn't even need to store the layer info in a dictionary -- an array of `(depth, range)` tuples would have been simpler.
 
