@@ -15,6 +15,6 @@ Only when I noticed this did I realize that the 4 I had gotten was a clue to a f
 
 ## Code changes since I submitted my AoC answers
 
-- For Part 2 it isn't necessary to compute the whole `tripSeverity`.  We only need to see if the packet gets caught in any layer, and exit the function immediately if so.  After seeing comments from an RCers about how this insight sped up her solution from 19 seconds to 2 seconds, I created a separate `isCaught` function.  This sped my solution from 1'20" to 30" -- still much slower than hers, but faster than before.
+- For Part 2 it isn't necessary to compute the whole `tripSeverity`.  We only need to see if the packet gets caught in any layer, and exit the function immediately if so.  After seeing comments from an RCer about how this insight sped up her solution from 19 seconds to 2 seconds, I created a separate `isCaught` function.  This sped my solution from 1'20" to 30" -- still much slower than hers, but faster than before.
 - I realized I didn't need to store the layer info in a dictionary.  Changed `layerRanges` to an array of `(depth, range)` tuples.  Not only was this simpler, it further sped up the Part 2 execution time from 30 seconds to 3 seconds, which is in the ballpark of Laura's solution.
 
