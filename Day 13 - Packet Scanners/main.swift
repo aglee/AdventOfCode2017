@@ -24,24 +24,33 @@ class Firewall {
 	// Reason for wasCaught is that there could be a trip where the packet was
 	// caught ONLY in layer 0.  In that case tripSeverity would be 0 but they
 	// would still have been caught.
-	func tripSeverity(delay: Int = 0) -> (tripSeverity: Int, wasCaught: Bool) {
+	func tripSeverity(delay: Int = 0) -> Int {
 		var tripSeverity = 0
-		var wasCaught = false
 		for depth in layerRanges.keys {
 			// Check if we're "caught" in this layer.
 			let range = layerRanges[depth]!
 			if (depth + delay) % (2 * (range - 1)) == 0 {
 				tripSeverity += depth * range
-				wasCaught = true
 			}
 		}
-		return (tripSeverity, wasCaught)
+		return tripSeverity
+	}
+
+	func isCaught(delay: Int = 0) -> Bool {
+		for depth in layerRanges.keys {
+			// Check if we're "caught" in this layer.
+			let range = layerRanges[depth]!
+			if (depth + delay) % (2 * (range - 1)) == 0 {
+				return true
+			}
+		}
+		return false
 	}
 }
 
 func solve1() {
 	let f = Firewall(inputLines)
-	print(f.tripSeverity().tripSeverity)
+	print(f.tripSeverity())
 }
 
 func solve2() {
@@ -53,8 +62,7 @@ func solve2() {
 	var delay = 0
 	while true {
 		delay += 1
-//		if delay % 500 == 0 { NSLog("delay %d", delay) }
-		if f.tripSeverity(delay: delay).wasCaught == false {
+		if f.isCaught(delay: delay) == false {
 			print(delay)
 			return
 		}
