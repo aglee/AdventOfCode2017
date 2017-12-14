@@ -3,14 +3,14 @@ import Foundation
 // This code has been modified since I originally used it for the AoC puzzle.
 
 class Firewall {
-	var layerRanges = [Int: Int]()
+	var layerRanges = [(depth: Int, range: Int)]()
 
 	init(_ lines: [String]) {
 		for line in lines {
 			let parts = line.components(separatedBy: ": ")
 			let depth = Int(parts[0])!
 			let range = Int(parts[1])!
-			self.layerRanges[depth] = range
+			self.layerRanges.append((depth, range))
 		}
 	}
 
@@ -26,9 +26,8 @@ class Firewall {
 	// would still have been caught.
 	func tripSeverity(delay: Int = 0) -> Int {
 		var tripSeverity = 0
-		for depth in layerRanges.keys {
+		for (depth, range) in layerRanges {
 			// Check if we're "caught" in this layer.
-			let range = layerRanges[depth]!
 			if (depth + delay) % (2 * (range - 1)) == 0 {
 				tripSeverity += depth * range
 			}
@@ -37,9 +36,8 @@ class Firewall {
 	}
 
 	func isCaught(delay: Int = 0) -> Bool {
-		for depth in layerRanges.keys {
+		for (depth, range) in layerRanges {
 			// Check if we're "caught" in this layer.
-			let range = layerRanges[depth]!
 			if (depth + delay) % (2 * (range - 1)) == 0 {
 				return true
 			}
