@@ -1,16 +1,16 @@
 import Foundation
 
+// This code has been modified since I originally used it for the AoC puzzle.
+
 class Firewall {
 	var layerRanges = [Int: Int]()
 
 	init(_ lines: [String]) {
-		var maxDepth = -1
 		for line in lines {
 			let parts = line.components(separatedBy: ": ")
 			let depth = Int(parts[0])!
 			let range = Int(parts[1])!
 			self.layerRanges[depth] = range
-			if depth > maxDepth { maxDepth = depth }
 		}
 	}
 
