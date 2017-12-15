@@ -52,3 +52,39 @@ Apparently Swift's overhead for accessing `value` is enough to raise the executi
 
 In any case, it turns out that the bit-twiddling versions are both much slower than Version A, which does the straightforward `% 2147483647`.  Version A takes only 10 seconds to solve Part 1.  Perhaps I could have foreseen this if I'd thought about how modulo arithmetic is implemented at the instruction level.  The same instruction for integer division also produces the modulus.  So the efficiency of using that one instruction outweighed the speedup I tried to get by knowing that 2147483647 is a special number (as I did knowing 4 and 8 are special numbers), at the cost of using several instructions to do the job of one.
 
+**Update:** AoC wizard askalski [**did** get a speedup](https://www.reddit.com/r/adventofcode/comments/7jxkiw/2017_day_15_solutions/dra1dep/) (25%) using what seems to be similar logic, but more efficiently coded, and in C rather than Swift:
+
+> Shaved 25% off execution time by replacing the expensive `%` with bitwise operations, taking advantage of the fact that 2<sup>31</sup> - 1 is a Mersenne prime.
+
+```c
+#include <stdio.h>
+#include <inttypes.h>
+
+inline uint64_t generate(uint64_t g, uint64_t factor)
+{
+	uint64_t prod = g * factor;
+	g = (prod & 0x7fffffff) + (prod >> 31);
+	return g >> 31 ? g - 0x7fffffff : g;
+}
+
+inline uint64_t solve(uint64_t a, uint64_t ma, uint64_t b, uint64_t mb, uint64_t r)
+{
+	uint64_t judge = 0;
+	while (r--) {
+		do a = generate(a, 16807); while (a & ma);
+		do b = generate(b, 48271); while (b & mb);
+		judge += !((a ^ b) & 0xffff);
+	}
+	return judge;
+}
+
+int main()
+{
+	uint64_t a, b;
+	scanf("Generator A starts with %" SCNu64 "\n", &a);
+	scanf("Generator B starts with %" SCNu64 "\n", &b);
+	printf("Part 1: %" PRIu64 "\n", solve(a, 0, b, 0, 40000000UL));
+	printf("Part 2: %" PRIu64 "\n", solve(a, 3, b, 7,  5000000UL));
+	return 0;
+}
+```
