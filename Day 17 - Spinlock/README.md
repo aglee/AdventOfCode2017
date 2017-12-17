@@ -4,7 +4,7 @@ At first I used an array to contain the circular buffer, which was fine for Part
 
 For Part 2, which required 50 million insertions at arbitrary positions, the array representation would have been way too slow.  Even if I'd used a linked list to speed up insertion I'd have had to insert 50 million nodes and do over 17 billion steps from one node to the next.  I'm curious how slow that would have been, but I don't feel like finding out myself at the moment.  Maybe someone on r/adventofcode will discuss a linked list approach.
 
-- **Update:** On r/adventofcode, miran1 posted [a concise Python solution](https://www.reddit.com/r/adventofcode/comments/7kc0xw/2017_day_17_solutions/drd6kck/) that ran in 90 seconds, using the deque in Python's `collections` module.  This is pretty neat, because topaz2078 (the AoC creator) replied that he'd clearly "underestimated the loop size for this problem", meaning he'd intended for brute force solutions to be prohibitively slow.
+- **Update:** On r/adventofcode, miran1 posted [a concise Python solution](https://www.reddit.com/r/adventofcode/comments/7kc0xw/2017_day_17_solutions/drd6kck/) that ran in 90 seconds, using the deque in Python's `collections` module.  This is pretty neat, because topaz2078 (the AoC creator) replied that he'd "clearly underestimated the loop size for this problem", meaning he'd intended for brute force solutions to be prohibitively slow.
 
 	```python
 	from collections import deque
