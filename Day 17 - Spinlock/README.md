@@ -26,6 +26,7 @@ My approach for Part 2 was to eyeball the output for the first 500 iterations.  
 - Observation: whenever `buffer[1]` changes to n, it always seems to be on the nth iteration.  I don't know why.  [**Update:** Oh duh, the nth iteration is when **every** n is inserted.]
 - By definition `buffer[1]` only changes when the current position lands on 0, causing the new value to be inserted in the position after that.
 - So really for Part 2 I don't need a representation of all the values in the circular buffer at all.  I only need to keep track of the buffer length, the current position, and the value most recently inserted at `buffer[1]`, which happens to be the iteration count at which that insertion occurred.
+	- **Update:** An RCer pointed out we don't have to keep track of the buffer length, as we can get that from the iteration count.  Of course!
 
 With this representation of the problem, it was fast enough to run 50 million iterations, each of which was a few integer arithmetic operations.
 
