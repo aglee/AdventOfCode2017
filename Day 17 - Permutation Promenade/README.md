@@ -6,11 +6,11 @@ For Part 2, which required 50 million insertions at arbitrary positions, the arr
 
 My approach for Part 2 was to eyeball the output for the first 500 iterations.  I stared at the data for a while trying to think of a "math-y" solution, but none came to mind.  The patterns I noticed did help though:
 
-- Observation: the first element of the buffer array always seems to be 0.
-- Assuming this is always the case (offhand I can't figure out the math for why it would, but this seems a reasonable guess), the answer for Part 2 will be the value of `buffer[1]` after 50 million insertions.
-- Observation: whenever `buffer[1]` changes to n, it always seems to be on the nth iteration.
-- By definition `buffer[1]` only changes when the current position lands on `buffer[0]`, causing the new value to be inserted in the position after that.
-- So really for Part 2 I don't need a representation of all the buffer values at all.  I only need to keep track of the buffer length, the current position, and the value most recently inserted at `buffer[1]`, which happens to be the iteration count at which that insertion occurred.
+- Observation: `buffer[0]` always seems to be 0.  At first I just guessed this would always be true without being able to prove it, but in hindsight I see why.  The buffer is insert-only, so the 0 will never be removed or changed to something else, and when values are inserted just before the 0, that is done by appending to the array (at least in my implementation), which leaves the 0 where it was.
+- Therefore the answer for Part 2 will be the value of `buffer[1]` after 50 million insertions.
+- Observation: whenever `buffer[1]` changes to n, it always seems to be on the nth iteration.  I don't know why.
+- By definition `buffer[1]` only changes when the current position lands on 0, causing the new value to be inserted in the position after that.
+- So really for Part 2 I don't need a representation of all the values in the circular buffer at all.  I only need to keep track of the buffer length, the current position, and the value most recently inserted at `buffer[1]`, which happens to be the iteration count at which that insertion occurred.
 
 With this representation of the problem, it was fast enough to run 50 million iterations, each of which was a few integer arithmetic operations.
 
