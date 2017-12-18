@@ -5,16 +5,11 @@ enum State {
 	case terminated
 }
 
-class Program2 {
+class Program {
 	var commands = [[String]]()
 	var pc = 0
 	var state: State = .waitingToStart
-
 	var regValues = [String: Int]()
-	var sndCount = 0
-
-	var otherProgram: Program2!
-	var queue = [Int]()  // append to push, removeFirst to pop
 
 	init(programID: Int, lines: [String]) {
 		regValues["p"] = programID
@@ -42,10 +37,18 @@ class Program2 {
 		}
 	}
 
+	func snd(_ x: String) {
+		fatalError("Must override `snd`.")
+	}
+
+	func rcv(_ x: String) {
+		fatalError("Must override `rcv`.")
+	}
+
 	// On exit, state is either .waiting or .terminated.
 	func run() {
 		state = .running
-		while true {
+		while state == .running {
 			if pc < 0 || pc >= commands.count {
 				state = .terminated
 				return
@@ -57,20 +60,12 @@ class Program2 {
 			let y = ((cmd.count == 3) ? cmd[2] : "")
 
 			switch instr {
-			case "snd":
-				otherProgram.queue.append(valueForParam(x))
-				sndCount += 1
+			case "snd": snd(x)
 			case "set": regValues[x] = valueForParam(y)
 			case "add": regValues[x] = valueForParam(x) + valueForParam(y)
 			case "mul": regValues[x] = valueForParam(x) * valueForParam(y)
 			case "mod": regValues[x] = valueForParam(x) % valueForParam(y)
-			case "rcv":
-				if queue.count == 0 {
-					state = .waitingToReceive
-					return
-				} else {
-					regValues[x] = queue.removeFirst()
-				}
+			case "rcv": rcv(x)
 			case "jgz":
 				if valueForParam(x) > 0 {
 					pc += valueForParam(y) - 1  // Subtract 1 because we'll add 1 in a moment.
@@ -78,25 +73,72 @@ class Program2 {
 			default: fatalError("Unexpected instruction '\(instr)'.")
 			}
 
-			pc += 1
+			if state == .running {
+				pc += 1
+			}
 		}
 	}
 }
 
-let t0 = Program2(programID: 0, lines: inputLines)  // testInputLines or inputLines
-let t1 = Program2(programID: 1, lines: inputLines)  // testInputLines or inputLines
-t0.otherProgram = t1
-t1.otherProgram = t0
+class Program1: Program {
+	var lastSnd = -999
 
-var (curr, other) = (t0, t1)
-while true {
-	curr.run()
-	if other.state == .terminated {
-		break
+	override func snd(_ x: String) {
+		lastSnd = valueForParam(x)
 	}
-	if other.state == .waitingToReceive && other.queue.count == 0 {
-		break
+
+	override func rcv(_ x: String) {
+		if valueForParam(x) != 0 {
+			state = .terminated
+		}
 	}
-	(curr, other) = (other, curr)
 }
-print(t1.sndCount)
+
+class Program2: Program {
+	var otherProgram: Program2?
+	var queue = [Int]()  // append to push, removeFirst to pop
+	var sndCount = 0
+
+	override func snd(_ x: String) {
+		otherProgram?.queue.append(valueForParam(x))
+		sndCount += 1
+	}
+
+	override func rcv(_ x: String) {
+		if queue.count == 0 {
+			state = .waitingToReceive
+		} else {
+			regValues[x] = queue.removeFirst()
+		}
+	}
+}
+
+func solve1() {
+	let t = Program1(programID: 0, lines: inputLines)
+	t.run()
+	print(t.lastSnd)
+}
+
+func solve2() {
+	let t0 = Program2(programID: 0, lines: inputLines)
+	let t1 = Program2(programID: 1, lines: inputLines)
+	t0.otherProgram = t1
+	t1.otherProgram = t0
+
+	var (curr, other) = (t0, t1)
+	while true {
+		curr.run()
+		if other.state == .terminated {
+			break
+		}
+		if other.state == .waitingToReceive && other.queue.count == 0 {
+			break
+		}
+		(curr, other) = (other, curr)
+	}
+	print(t1.sndCount)
+}
+
+solve1()
+solve2()
+
