@@ -10,3 +10,5 @@ Defensive coding: I did not assume the letters would be uppercase or even necess
 
 An observation that simplified my logic: all cases are "continue in the current direction" except " " (end of the road) and "+" (change direction and THEN continue in the current direction).  No need for special handling of the case where paths overlap.
 
+Afterwards I realized I could have used `index(of:)` instead of a loop to find the position of the initial `|` character.
+
