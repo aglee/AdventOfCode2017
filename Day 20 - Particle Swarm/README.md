@@ -17,7 +17,7 @@ Even though this gave me the right answer, I realized in the morning that it sti
 
 Once I had Part 1, Part 2 wasn't too bad.  My code wasn't pretty but got the job done.  In theory my reasoning for Part 2 had a loophole, but in practice it gave me the right answer.  I added a comment about this in the `solve2()` function.
 
-One more thing that occurred to me belatedly: this seemingly 3-dimensional problem could have been reduced to the 1-dimensional representation that was used in the examples.  That is, `p`, `v`, and `a` didn't have to be vectors; they could all have been integers calculated up front from the Manhattan distances of the given 3D points.
+One more thing that occurred to me belatedly: this seemingly 3-dimensional problem could have been reduced to the 1-dimensional representation that was used in the examples.  That is, `p`, `v`, and `a` didn't have to be vectors; they could all have been integers calculated up front from the Manhattan distances of the given 3D points.  (I think??)
 
 Notes on what my brain was doing:
 
