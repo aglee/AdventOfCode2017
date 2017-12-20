@@ -123,22 +123,36 @@ func solve1() {
 	let cloud = Cloud(inputLines)  // Use inputLines or testInputLines.
 	cloud.tickUntilNoneMovingCloserToOrigin()
 	
-	// Find the particle with the smallest acceleration.  Since all particles
-	// are now moving away from the origin, they will all eventually out-distance
-	// this particle, permanently, no matter how far it may be from the origin
-	// right now.
-	//
-	// If two particles have the same acceleration, choose the one with the
-	// smaller position.  We assume from the problem statement that the input
-	// has exactly one answer, so this algorithm should be good enough.
+	// All particles are now moving away from the origin.  Find the "smallest"
+	// particle as measured first by acceleration, then velocity, then distance
+	// from origin.  All other particles will eventually out-distance that
+	// particle, permanently.  We can assume the answer is unique.
 	var minIndex = -1
 	var minAcc = Int.max
+	var minVel = Int.max
 	var minPos = Int.max
 	for (i, p) in cloud.particles.enumerated() {
-		if p.acc.manh < minAcc
-			|| (p.acc.manh == minAcc && p.pos.manh < minPos) {
+		// "Better" means "closer to the origin in the long run".
+		var isBetterCandidate = false
+		if p.acc.manh < minAcc {
+			// Smaller acceleration is better.
+			isBetterCandidate = true
+		} else if p.acc.manh == minAcc {
+			if p.vel.manh < minVel {
+				// If equal acceleration, smaller velocity is better.
+				isBetterCandidate = true
+			} else if p.vel.manh == minVel {
+				if p.pos.manh < minPos {
+					// If equal acceleration and velocity, smaller
+					// distance from origin is better.
+					isBetterCandidate = true
+				}
+			}
+		}
+		if isBetterCandidate {
 			minIndex = i
 			minAcc = p.acc.manh
+			minVel = p.vel.manh
 			minPos = p.pos.manh
 		}
 	}
