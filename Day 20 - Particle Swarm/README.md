@@ -12,7 +12,6 @@ What I'd missed was that multiple particles could have the same magnitude of acc
 	- In theory some particles might never move at all, but I highly doubt anyone's data set included a particle with both zero velocity and zero acceleration.  Anyway, I went back afterwards and tweaked the code to handle this case.
 - Find the particle with the smallest acceleration among all the particles, as measured by Manhattan distance.
 - If more than one particle has that magnitude of acceleration, pick the one that is nearest the origin.
-	- We know there is only one right answer, so if multiple particles share that smallest acceleration, we can assume exactly one is nearest to the origin.
 
 Even though this gave me the right answer, I realized in the morning that it still was not correct!  What I should have done was compare particles by acceleration, then **velocity**, and only then position.  Consider two points with the same acceleration.  One might currently be closer to the origin, but if their velocities are different, the other might overtake it on the very next tick.  I went back and fixed this in my code.
 
