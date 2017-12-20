@@ -10,7 +10,7 @@ class Point {
 	
 	// Return something unique and hashable that we can use in a Set.
 	var id: String { return "\(x),\(y),\(z)" }
-
+	
 	init(_ x: Int, _ y: Int, _ z: Int) {
 		(self.x, self.y, self.z) = (x, y, z)
 	}
@@ -61,25 +61,37 @@ class Cloud {
 	}
 	
 	// Keep ticking until all particles are either moving away from the origin
-	// or are (for the moment at least) sitting still.
+	// or not moving at all.  The latter case is highly unlikely but I feel
+	// compelled to check for it anyway.
 	func tickUntilNoneMovingCloserToOrigin(removeCollisions: Bool = false) {
 		if removeCollisions { removeCollidingParticles() }
 		while true {
-			var numMovingCloser = 0
+			var numParticlesThatNeedMoreTicks = 0
 			for p in particles {
 				let oldDistance = p.pos.manh
 				p.tick()
-				if p.pos.manh < oldDistance { numMovingCloser += 1 }
+				let newDistance = p.pos.manh
+				if newDistance < oldDistance {
+					// The particle moved toward the origin.  It will need at
+					// least one more tick before it's moving away from the origin.
+					numParticlesThatNeedMoreTicks += 1
+				} else if newDistance == oldDistance
+					&& (p.vel.manh != 0 || p.acc.manh != 0)
+				{
+					// The particle's distance from the origin didn't change,
+					// but it will move on the next tick, so let's wait and see
+					// then whether it moves toward the origin.
+					numParticlesThatNeedMoreTicks += 1
+				}
 			}
 			if removeCollisions { removeCollidingParticles() }
-			if numMovingCloser == 0 { return }
+			if numParticlesThatNeedMoreTicks == 0 { return }
 		}
 	}
 	
 	func removeCollidingParticles() {
 		// Construct lookup dictionary.  Key is string uniquely identifying a
-		// position.  Value is set of `particles` array indexes of points at
-		// that position.
+		// position.  Value is set of array indexes of particles at that position.
 		var positionMap = [String: Set<Int>]()
 		for (i, p) in particles.enumerated() {
 			let posID = p.pos.id
@@ -111,10 +123,14 @@ func solve1() {
 	let cloud = Cloud(inputLines)  // Use inputLines or testInputLines.
 	cloud.tickUntilNoneMovingCloserToOrigin()
 	
-	// Find the particle with the smallest acceleration.  If two particles have
-	// the same acceleration, choose the one with the smallest position.  We
-	// assume from the problem statement that the input has exactly one answer,
-	// so this algorithm should be good enough.
+	// Find the particle with the smallest acceleration.  Since all particles
+	// are now moving away from the origin, they will all eventually out-distance
+	// this particle, permanently, no matter how far it may be from the origin
+	// right now.
+	//
+	// If two particles have the same acceleration, choose the one with the
+	// smaller position.  We assume from the problem statement that the input
+	// has exactly one answer, so this algorithm should be good enough.
 	var minIndex = -1
 	var minAcc = Int.max
 	var minPos = Int.max
@@ -130,6 +146,11 @@ func solve1() {
 }
 
 func solve2() {
+	// I have a feeling that in theory this could be wrong, because even though
+	// I tick long enough for all particles to be exploding away from the origin,
+	// it seems to me two of them might be on the same vector, with one of them
+	// accelerating fast enough to catch the other.  In practice, though, this
+	// gave me the right answer.
 	let cloud = Cloud(inputLines)  // Use inputLines or testInputLines.
 	cloud.tickUntilNoneMovingCloserToOrigin(removeCollisions: true)
 	print(cloud.particles.count)
