@@ -14,3 +14,5 @@ PrimesAreMyFavorite had [a neat insight](https://www.reddit.com/r/adventofcode/c
 
 My solution for Part 2 took 15 seconds with just 18 iterations.
 
+- Followup: I wrote a Python [translation](main.py) of my Swift solution, and it ran in under 5 seconds.
+
