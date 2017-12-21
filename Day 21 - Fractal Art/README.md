@@ -8,3 +8,9 @@ A bug I ran into was that I didn't add all the necessary rule variations.  I add
 
 I wondered if the pixel pattern produced by Part 2 would look like anything.  To my eye it didn't seem to, but that doesn't mean there isn't a hidden meaning, perhaps related to the name of the puzzle, "Fractal Art".
 
+PrimesAreMyFavorite had [a neat insight](https://www.reddit.com/r/adventofcode/comments/7l78eb/2017_day_21_solutions/drk8j2m/) (follow the link to see their code):
+
+> After 3 iterations a 3x3 block will have transformed into 9 more 3x3 blocks, the futures of which can all be calculated independently. Using this fact I just keep track of how many of each "type" of 3x3 block I have at each stage, and can thus easily calculate the number of each type of 3x3 block I'll have 3 iterations later. Using this I can calculate the exact number of pixels that will be on after 3000 iterations in less than 0.3 seconds (it's a 955 digit number for my inputs).
+
+My solution for Part 2 took 15 seconds with just 18 iterations.
+
