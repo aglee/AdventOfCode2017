@@ -1,0 +1,30 @@
+a = b = c = d = e = f = g = h = 0
+
+a = 1  // In Part 2, register "a" starts at 1.
+
+b = 79
+c = 79
+if a != 0 {
+	b = 107900
+	c = 124900  // won't change
+}
+
+while true {
+	isPrime = true  // "isPrime" is register "f" renamed.
+	for d in 2...b {
+		for e in 2...b {
+			if d*e == b {
+				isPrime = false
+			}
+		}
+	}
+
+	if isPrime == false {
+		h = h + 1
+	}
+	
+	if b == c {
+		exit
+	}
+	b = b + 17
+}
