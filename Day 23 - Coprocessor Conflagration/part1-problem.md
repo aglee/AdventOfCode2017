@@ -2,7 +2,7 @@
 
 You decide to head directly to the CPU and fix the printer from there. As you get close, you find an experimental coprocessor doing so much work that the local programs are afraid it will halt and catch fire. This would cause serious issues for the rest of the computer, so you head in and see what you can do.
 
-The code it's running seems to be a variant of the kind you saw recently on that tablet. The general functionality seems very similar, but some of the instructions are different:
+The code it's running seems to be a variant of the kind you saw recently on that [tablet](http://adventofcode.com/2017/day/18). The general functionality seems very similar, but some of the instructions are different:
 
 - `set X Y` sets register X to the value of Y.
 - `sub X Y` decreases register X by the value of Y.
