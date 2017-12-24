@@ -1,125 +1,127 @@
-//// Confirming they're all distinct.
-//var portStrings = Set<String>()
-//for line in inputLines {
-//	let portPins = line.split(separator: "/").map { Int($0)! }
-//	let minPort = min(portPins[0], portPins[1])
-//	let maxPort = max(portPins[0], portPins[1])
-//	let s = "\(minPort),\(maxPort)"
-//	
-//	if portStrings.contains(s) {
-//		()
-//	}
-//	portStrings.insert(s)
-//}
-//print(portStrings.count)
+// NOTE: This is not the code I originally used to solve Day 24.  That code was
+// annoyingly messy, so I rewrote it to be less messy.
 
-class Node {
-	var value: Int
-	var connectedNodes = [Node]()
-	var connectedValues = Set<Int>()
+
+// Represent a collection of distinct "ports" (as defined by the Day 24 puzzle
+// description) as a graph of unique integer values.  Each edge corresponds to a
+// "port", with the port's pin counts given by the two connected vertices.  A
+// "bridge" thus corresponds to a path in the graph starting at the node with
+// value 0.
+//
+// Note that it is possible to have an edge between a vertex and itself, for
+// example a port like "2/2" or "15/15".
+class Graph {
+	var edgeMap = [Int: Set<Int>]()
+	var maxBridgeStrength = 0
+	var maxBridgeLength = 0
+	var maxBridgeStrengthForMaxBridgeLength = 0
 	
-	init(_ value: Int) { self.value = value }
+	init(inputLines: [String]) {
+		for line in inputLines {
+			let portPins = line.split(separator: "/").map { Int($0)! }
+			addEdge(portPins[0], portPins[1])
+		}
+	}
 	
-	func connect(_ otherNode: Node) {
-		if connectedValues.contains(otherNode.value) { fatalError() }
-		connectedNodes.append(otherNode)
-		connectedValues.insert(otherNode.value)
-	}
-}
-
-var nodesByValue = [Int: Node]()
-
-func nodeWithValue(_ value: Int) -> Node {
-	if let node = nodesByValue[value] {
-		return node
-	} else {
-		let node = Node(value)
-		nodesByValue[value] = node
-		return node
-	}
-}
-
-for line in inputLines {  // testInputLines or inputLines
-	let portPins = line.split(separator: "/").map { Int($0)! }
-	let nodeA = nodeWithValue(portPins[0])
-	let nodeB = nodeWithValue(portPins[1])
-	nodeA.connect(nodeB)
-	if (nodeA.value != nodeB.value) {
-		nodeB.connect(nodeA)
-	}
-}
-
-func connectionString(_ nodeA: Node, _ nodeB: Node) -> String {
-	let minValue = min(nodeA.value, nodeB.value)
-	let maxValue = max(nodeA.value, nodeB.value)
-	return "\(minValue)/\(maxValue)"
-}
-
-func strength(using connections: Set<String>) -> Int {
-	var result = 0
-	for conn in connections {
-		let pins = conn.split(separator: "/").map { Int($0)! }
-		result += pins[0] + pins[1]
-	}
-	return result
-}
-
-var maxStrengthPerDepth = [Int: Int]()
-
-var part2Answer = 0
-
-// Note that it is possible to traverse (once) a connection between a Node and
-// itself, e.g. the port "2/2" is represented as a connection between the Node
-// with value 2 and itself.  The way we use "connectionsAlreadyUsed" will track
-// that case.
-func maxStrength(startNode: Node, connectionsAlreadyUsed: Set<String>, requiredDepth: Int) -> Int {
-
-	
-	var maxStrengthSoFar = 0
-	for node in startNode.connectedNodes {
-		let conn = connectionString(startNode, node)
-		if !connectionsAlreadyUsed.contains(conn) {
-			var usedConnections = connectionsAlreadyUsed
-			usedConnections.insert(conn)
-			let candidateStrength = startNode.value + node.value + maxStrength(startNode: node, connectionsAlreadyUsed: usedConnections, requiredDepth: requiredDepth)
-			if candidateStrength > maxStrengthSoFar {
-				maxStrengthSoFar = candidateStrength
+	func addEdge(_ n1: Int, _ n2: Int) {
+		func connect(from a: Int, to b: Int) {
+			if var connections = edgeMap[a] {
+				connections.insert(b)
+				edgeMap[a] = connections
+			} else {
+				edgeMap[a] = Set([b])
 			}
-
+		}
 		
-			if usedConnections.count == requiredDepth {
-				part2Answer = max(part2Answer, strength(using: usedConnections))
+		connect(from: n1, to: n2)
+		connect(from: n2, to: n1)
+	}
+	
+	func removeEdge(_ n1: Int, _ n2: Int) {
+		func disconnect(from a: Int, to b: Int) {
+			if var connections = edgeMap[a] {
+				connections.remove(b)
+				edgeMap[a] = connections
 			}
+		}
+		
+		disconnect(from: n1, to: n2)
+		disconnect(from: n2, to: n1)
+	}
+	
+	func containsEdge(_ n1: Int, _ n2: Int) -> Bool {
+		guard let connections = edgeMap[n1] else { return false }
+		return connections.contains(n2)
+	}
+	
+	// To avoid double-counting, only add pairs a/b where a<=b.
+	func edgeCount() -> Int {
+		var count = 0
+		for (a, connections) in edgeMap {
+			for b in connections {
+				if a <= b { count += 1 }
+			}
+		}
+		return count
+	}
+	
+	// Add up the pin counts of all the "ports".  To avoid double-counting,
+	// only add pairs a/b where a<=b.  We have to include the case where
+	// a==b, because the graph can contain an edge from a node to itself.
+	// The input can contain a "port" that is, for example, 15/15.
+	func strength() -> Int {
+		var s = 0
+		for (a, connections) in edgeMap {
+			for b in connections {
+				if a <= b { s += a + b }
+			}
+		}
+		return s
+	}
+	
+	// Uses depth-first traversal to traverse all possible paths in the graph.
+	func visitAllPossiblePaths(startingAt a: Int, edgesAlreadyTraversed: Graph) {
+		var didRecurse = false
+		for b in edgeMap[a]! {
+			if !edgesAlreadyTraversed.containsEdge(a, b) {
+				edgesAlreadyTraversed.addEdge(a, b)
+				visitAllPossiblePaths(startingAt: b, edgesAlreadyTraversed: edgesAlreadyTraversed)
+				edgesAlreadyTraversed.removeEdge(a, b)
+				
+				didRecurse = true
+			}
+		}
+		
+		// If we've reached a node where we can't continue the path any further,
+		// then edgesAlreadyTraversed contains a candidate for the "bridge" with
+		// the maximum possible strength, which is what we need for Part 1.
+		// It's also a candidate for the longest possible bridge, which we need
+		// for Part 2.
+		if !didRecurse {
+			let bridgeStrength = edgesAlreadyTraversed.strength()
+			maxBridgeStrength = max(maxBridgeStrength, bridgeStrength)
 			
+			let bridgeLength = edgesAlreadyTraversed.edgeCount()
+			if bridgeLength > maxBridgeLength {
+				maxBridgeLength = bridgeLength
+				maxBridgeStrengthForMaxBridgeLength = bridgeStrength
+			} else if bridgeLength == maxBridgeLength {
+				maxBridgeStrengthForMaxBridgeLength = max(maxBridgeStrengthForMaxBridgeLength, bridgeStrength)
+			}
 		}
 	}
-	return maxStrengthSoFar
+	
 }
 
-func maxDepth(startNode: Node, connectionsAlreadyUsed: Set<String>) -> Int {
-	var maxDepthSoFar = 0
-	for node in startNode.connectedNodes {
-		let conn = connectionString(startNode, node)
-		if !connectionsAlreadyUsed.contains(conn) {
-			var usedConnections = connectionsAlreadyUsed
-			usedConnections.insert(conn)
-			let candidateDepth = 1 + maxDepth(startNode: node, connectionsAlreadyUsed: usedConnections)
-			if candidateDepth > maxDepthSoFar {
-				maxDepthSoFar = candidateDepth
-			}
-		}
-	}
-	return maxDepthSoFar
-}
+let g = Graph(inputLines: inputLines)
+g.visitAllPossiblePaths(startingAt: 0, edgesAlreadyTraversed: Graph(inputLines: []))
 
 func solve1() {
-//	print(maxStrength(startNode: nodeWithValue(0), connectionsAlreadyUsed: Set<String>(), requiredDepth: -1))
+	print(g.maxBridgeStrength)
 }
 
 func solve2() {
-	let maxD = maxDepth(startNode: nodeWithValue(0), connectionsAlreadyUsed: Set<String>())
-	let _ = maxStrength(startNode: nodeWithValue(0), connectionsAlreadyUsed: Set<String>(), requiredDepth: maxD)
-	print(part2Answer)
+	print(g.maxBridgeStrengthForMaxBridgeLength)
 }
 
 solve1()

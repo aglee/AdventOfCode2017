@@ -10,3 +10,5 @@ For Part 1 I used depth-first traversal to find the "strength" of every possible
 
 For Part 2 I added a function to find the greatest path length and hacked my Part 1 code to put the Part 2 answer in a global variable.  I got stuck on a bug that was due to doing the recursion wrong.
 
+**Update:** My original messy version was bothering me, so I overhauled the code to be somewhat less messy.  It actually was slower solving Part 1 than my original code -- 7 seconds vs 5 seconds.
+
