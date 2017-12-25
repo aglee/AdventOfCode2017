@@ -22,6 +22,8 @@ let F: State = ("F", (1, 1, "D"), (1, 1, "A"))
 let statesByName = ["A": A, "B": B, "C": C, "D": D, "E": E, "F": F]
 ```
 
+- **Update:** After seeing a [more compact transcription](https://www.reddit.com/r/adventofcode/comments/7lzo3l/2017_day_25_solutions/drqaogz/) on r/adventofcode, I realized `State` objects didn't need to have a `name`, and the `State` type could have been a typealias of the `[Transition]` array type.  Then the values 0 and 1 could have been used as indices into those arrays, instead of being used to choosed between the `zeroCase` and `oneCase` components of a tuple.
+
 After deleting all the other stuff I wouldn't have needed, my code would have been 49 lines instead of 76.
 
 One thing I spaced out on was clicking the one last link needed to complete my Advent of Code.  I knew from previous years that there was no actual puzzle for Part 2, but I forgot to click that link.
